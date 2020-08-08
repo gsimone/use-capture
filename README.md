@@ -47,9 +47,14 @@ A context provider, wrap around the components that need to access recording sta
 
 Props:
 ```js
-duration: 2, // record time
-framerate: 60, // frames per second
-format: "webm", // output format ( webm, jpg, gif )
+<Recorder
+  duration={2} // record time
+  framerate={24} // frames per second
+  format={webm} // output format ( webm, jpg, gif )
+  motionBlurFrames={4} // number of frames used to generate motion blur
+>
+   ...yourScene
+</Recorder>
 ```
 
 ### usePlayhead
