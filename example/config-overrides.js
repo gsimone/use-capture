@@ -14,7 +14,11 @@ module.exports = (config, env) => {
     addReactRefresh(),
     removeModuleScopePlugin(),
     addWebpackAlias({
-      "r3f-ccapture": "../src/index.ts",
+      "react-three-fiber": path.resolve("node_modules/react-three-fiber"),
+      react: path.resolve("node_modules/react"),
+      "react-dom": path.resolve("node_modules/react-dom"),
+      "r3f-ccapture": "../../",
+      "ccapture.js": "../ccapture.js",
     }),
     addWebpackModuleRule({
       test: /\.(glsl|vs|fs|vert|frag)$/,
