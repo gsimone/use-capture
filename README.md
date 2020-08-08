@@ -5,6 +5,14 @@ Record react-three-fiber scenes with [ccapture.js](https://github.com/spite/ccap
 
 Discussion: https://github.com/react-spring/drei/issues/84
 
+## Test local
+
+```
+yarn && yarn start
+```
+
+Press *R* to start recording.
+
 
 ## Notes
 
