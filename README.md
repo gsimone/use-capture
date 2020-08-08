@@ -26,3 +26,29 @@ Record react-three-fiber scenes with [ccapture.js](https://github.com/spite/ccap
   }}
 >
 ```
+
+## API
+
+### <Recorder />
+
+A context provider, wrap around the components that need to access recording status
+
+Props:
+```js
+duration: 2, // record time
+framerate: 60, // frames per second
+format: "webm", // output format ( webm, jpg, gif )
+```
+
+### usePlayhead
+
+A hook to fetch the current playhead status
+
+```js
+const { getProgress, duration, playhead } = usePlayhead()
+useFrame(() => {
+
+   ref.current.rotation.x = Math.sin( getProgress() ) 
+
+})
+```
