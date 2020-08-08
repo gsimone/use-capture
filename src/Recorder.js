@@ -79,8 +79,6 @@ function Recorder({
     playhead.current = currentPlayhead;
   });
 
-  console.log(capturer, framerate);
-
   return (
     <recorderContext.Provider value={{ playhead, duration, startRecording }}>
       {children}
