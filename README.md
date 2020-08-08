@@ -11,13 +11,9 @@ Discussion: https://github.com/react-spring/drei/issues/84
 yarn && yarn start
 ```
 
-Press *R* to start recording.
-
-
 ## Notes
 
 - the ccapture.js dependency is a git submodule of a fork, until the original is updated & published 
-- Press R to start recording (customization for this behaviour coming)
 - Gif format doesn't work yet
 
 ## Requisites
@@ -62,11 +58,10 @@ Props:
 A hook to fetch the current playhead status
 
 ```js
-const { getProgress, duration, playhead } = useRecorder()
+const { getProgress, duration, playhead, startRecording } = useRecorder()
+
 useFrame(() => {
-
    ref.current.rotation.x = Math.sin( getProgress() ) 
-
 })
 ```
 
