@@ -1,0 +1,3 @@
+[submodule "ccapture.js"]
+	path = ccapture.js
+	url = git@github.com:Unsigno/ccapture.js.git
