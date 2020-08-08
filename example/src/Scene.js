@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { useFrame } from "react-three-fiber";
 import { Octahedron, PerspectiveCamera } from "drei";
 
-import { useRecorder } from "r3f-ccapture";
+import { useRecorder } from "use-ccapture";
 import { useControl } from "react-three-gui";
 
 import vert from "./shaders/default.vert";

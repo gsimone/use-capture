@@ -2,7 +2,7 @@ import React from "react";
 import { Canvas } from "react-three-fiber";
 import { EffectComposer, Noise, Vignette } from "react-postprocessing";
 
-import { Recorder } from "r3f-ccapture";
+import { Recorder } from "use-ccapture";
 
 import Scene from "./Scene";
 import { Controls, useControl } from "react-three-gui";

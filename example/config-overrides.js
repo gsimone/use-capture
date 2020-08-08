@@ -17,7 +17,7 @@ module.exports = (config, env) => {
       "react-three-fiber": path.resolve("node_modules/react-three-fiber"),
       react: path.resolve("node_modules/react"),
       "react-dom": path.resolve("node_modules/react-dom"),
-      "r3f-ccapture": "../../",
+      "use-ccapture": "../../",
       "ccapture.js": "../ccapture.js",
     }),
     addWebpackModuleRule({
