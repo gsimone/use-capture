@@ -1,6 +1,8 @@
 # WIP 🎥 r3f-ccapture
 Record react-three-fiber scenes with [ccapture.js](https://github.com/spite/ccapture.js)
 
+<img src="https://raw.githubusercontent.com/gsimone/r3f-ccapture/master/octa.gif" width="200" />
+
 Discussion: https://github.com/react-spring/drei/issues/84
 
 
