@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useRef, useMemo, useEffect, useCallback, createContext, useContext, Ref } from 'react'
 import { useFrame } from 'react-three-fiber'
+// @ts-ignore
 import CCapture from 'ccapture.js'
 
 type RecorderContext = {
@@ -20,11 +21,12 @@ type RecorderProps = {
   framerate: number
   verbose: boolean
   motionBlurFrames: number
-  children: React.ReactNode
+  children: React.ReactNode,
+  showWidget: boolean,
 }
 
 // convenience hook
-export function useRecorder(): RecorderContext {
+export function useCCapture(): RecorderContext {
   return useContext(recorderContext)
 }
 
@@ -34,6 +36,7 @@ export function Recorder({
   framerate = 24,
   verbose = false,
   motionBlurFrames = 0,
+  showWidget = false,
   children,
 }: RecorderProps): React.ReactNode {
   const capturer = useMemo(() => {
@@ -42,9 +45,9 @@ export function Recorder({
       framerate,
       verbose,
       motionBlurFrames,
-      display: true,
+      display: showWidget,
     })
-  }, [format, framerate, motionBlurFrames, verbose])
+  }, [format, framerate, motionBlurFrames, showWidget, verbose])
 
   const state = useRef({
     shouldRecord: false,
