@@ -1,6 +1,8 @@
 # WIP 🎥 r3f-ccapture
-
 Record react-three-fiber scenes with [ccapture.js](https://github.com/spite/ccapture.js)
+
+Discussion: https://github.com/react-spring/drei/issues/84
+
 
 ## Notes
 
@@ -52,3 +54,5 @@ useFrame(() => {
 
 })
 ```
+
+
