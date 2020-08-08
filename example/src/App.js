@@ -2,8 +2,9 @@ import React from "react";
 import { Canvas } from "react-three-fiber";
 import { EffectComposer, Noise, Vignette } from "react-postprocessing";
 
+import { Recorder } from "r3f-ccapture";
+
 import Scene from "./Scene";
-import Recorder from "./Recorder";
 import { Controls, useControl } from "react-three-gui";
 
 function useIntControl(name, { value, ...opts }) {

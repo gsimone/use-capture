@@ -14,7 +14,7 @@ module.exports = (config, env) => {
     addReactRefresh(),
     removeModuleScopePlugin(),
     addWebpackAlias({
-      "ccapture.js": "../ccapture.js"
+      "r3f-ccapture": "../src/index.ts",
     }),
     addWebpackModuleRule({
       test: /\.(glsl|vs|fs|vert|frag)$/,

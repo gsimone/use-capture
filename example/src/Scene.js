@@ -2,11 +2,11 @@ import React, { useRef, useEffect } from "react";
 import { useFrame } from "react-three-fiber";
 import { Octahedron, PerspectiveCamera } from "drei";
 
-import { useRecorder } from "./Recorder";
+import { useRecorder } from "r3f-ccapture";
+import { useControl } from "react-three-gui";
 
 import vert from "./shaders/default.vert";
 import frag from "./shaders/default.frag";
-import { useControl } from "react-three-gui";
 
 function Box() {
   const ref = useRef();
