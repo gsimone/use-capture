@@ -57,12 +57,12 @@ Props:
 </Recorder>
 ```
 
-### usePlayhead
+### useRecorder
 
 A hook to fetch the current playhead status
 
 ```js
-const { getProgress, duration, playhead } = usePlayhead()
+const { getProgress, duration, playhead } = useRecorder()
 useFrame(() => {
 
    ref.current.rotation.x = Math.sin( getProgress() ) 

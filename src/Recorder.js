@@ -11,7 +11,7 @@ import CCapture from "ccapture.js";
 
 const recorderContext = createContext({ playhead: 0 });
 
-export function usePlayhead() {
+export function useRecorder() {
   const { playhead, duration, startRecording } = useContext(recorderContext);
 
   // this could be moved to the component, making this hook just a convenience thing
