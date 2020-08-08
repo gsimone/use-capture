@@ -1,29 +1,34 @@
-import React, { useRef, useMemo, useEffect, createContext, useContext } from 'react'
-import { useFrame} from 'react-three-fiber'
+import React, {
+  useRef,
+  useMemo,
+  useEffect,
+  useCallback,
+  createContext,
+  useContext,
+} from "react";
+import { useFrame } from "react-three-fiber";
 import CCapture from "ccapture.js";
 
-const recorderContext = createContext({ playhead: 0 })
+const recorderContext = createContext({ playhead: 0 });
 
 export function usePlayhead() {
+  const { playhead, duration, startRecording } = useContext(recorderContext);
 
-  const { playhead, duration } = useContext(recorderContext)
+  // this could be moved to the component, making this hook just a convenience thing
+  const getProgress = useCallback(() => {
+    return playhead.current / duration;
+  }, [playhead, duration]);
 
-  const getProgress = React.useCallback(() => {
-    return playhead.current / duration
-  }, [ playhead, duration ])
-
-  return { playhead, duration, getProgress }
-
+  return { playhead, duration, getProgress, startRecording };
 }
 
-function Recorder({ 
+function Recorder({
   format = "webm",
-  key = "r", 
-  duration = 2, 
-  framerate = 24, 
-  verbose = false, 
-  motionBlurFrames, 
-  children
+  duration = 2,
+  framerate = 24,
+  verbose = false,
+  motionBlurFrames,
+  children,
 }) {
   const capturer = useMemo(() => {
     return new CCapture({
@@ -31,55 +36,56 @@ function Recorder({
       framerate,
       verbose,
       motionBlurFrames,
-      display: true
-    })
-  }, [format, framerate, motionBlurFrames, verbose])
+      display: true,
+    });
+  }, [format, framerate, motionBlurFrames, verbose]);
 
   const state = useRef({
     shouldRecord: false,
     isRecording: false,
-    prevPlayhead: 0
-  })
+    prevPlayhead: 0,
+  });
 
-  const handleKey = React.useCallback((e) => {
-    if (e.key === key) {
-      state.current.shouldRecord = true
-      playhead.current = 0
-    }
-  }, [key])
+  const playhead = useRef(0);
 
-  useEffect(() => {
-    document.addEventListener('keyup', handleKey)
+  const startRecording = useCallback(() => {
+    state.current.shouldRecord = true;
+    playhead.current = 0;
+  }, [state, playhead]);
 
-    return () => document.removeEventListener('keyup', handleKey)
-  }, [handleKey])
-
-  const playhead = useRef(0)
   useFrame(({ clock, gl }) => {
-
     let currentPlayhead = clock.getElapsedTime() % duration;
 
-    if(state.current.isRecording && currentPlayhead < playhead.current){
+    if (state.current.isRecording && currentPlayhead < playhead.current) {
       state.current.shouldRecord = false;
       state.current.isRecording = false;
       capturer.stop();
       capturer.save();
     }
 
-    if(!state.current.isRecording && state.current.shouldRecord && currentPlayhead < playhead.current){
+    if (
+      !state.current.isRecording &&
+      state.current.shouldRecord &&
+      currentPlayhead < playhead.current
+    ) {
       state.current.isRecording = true;
       capturer.start();
     }
 
-    if(state.current.isRecording){
-      capturer.capture(gl.domElement)
+    if (state.current.isRecording) {
+      capturer.capture(gl.domElement);
     }
 
-    playhead.current = currentPlayhead
-  })
-  
-  return <recorderContext.Provider value={{ playhead, duration }}>{children}</recorderContext.Provider>
+    playhead.current = currentPlayhead;
+  });
+
+  console.log(capturer, framerate);
+
+  return (
+    <recorderContext.Provider value={{ playhead, duration, startRecording }}>
+      {children}
+    </recorderContext.Provider>
+  );
 }
 
-
-export default Recorder
+export default Recorder;
