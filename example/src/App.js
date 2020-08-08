@@ -1,9 +1,15 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Canvas } from "react-three-fiber";
-import { EffectComposer, Noise, Vignette } from "react-postprocessing";
+import {
+  ChromaticAberration,
+  EffectComposer,
+  Noise,
+  Vignette,
+} from "react-postprocessing";
+
+import { Recorder } from "use-ccapture";
 
 import Scene from "./Scene";
-import Recorder from "./Recorder";
 import { Controls, useControl } from "react-three-gui";
 
 function useIntControl(name, { value, ...opts }) {
@@ -27,8 +33,8 @@ function useIntControl(name, { value, ...opts }) {
 }
 
 function App() {
-  const duration = useIntControl("Duration", { value: 2, max: 120 });
-  const fps = useIntControl("Framerate", { value: 24, min: 12, max: 120 });
+  const duration = useIntControl("Duration", { value: 4, max: 120 });
+  const fps = useIntControl("Framerate", { value: 60, min: 12, max: 120 });
   const motionBlurFrames = useIntControl("Motion blur frames", {
     value: 0,
     max: 12,
@@ -53,22 +59,26 @@ function App() {
         }}
         // 💡 not having a clear color would glitch the recording
         onCreated={({ gl }) => {
-          gl.setClearColor("#000");
+          gl.setClearColor("#fff");
+        }}
+        camera={{
+          position: [0, 0, -10],
         }}
         concurrent
       >
-        <Recorder
-          duration={duration}
-          framerate={fps}
-          motionBlurFrames={motionBlurFrames}
-          format={format}
-        >
-          <EffectComposer>
-            <Noise opacity={0.1} />
-            <Vignette eskil={false} offset={0.1} darkness={1.1} />
-          </EffectComposer>
-          <Scene />
-        </Recorder>
+        <Suspense fallback={null}>
+          <Recorder
+            duration={duration}
+            framerate={fps}
+            motionBlurFrames={motionBlurFrames}
+            format={format}
+          >
+            <Scene />
+          </Recorder>
+        </Suspense>
+        <EffectComposer>
+          <ChromaticAberration offset={[0.004, 0.004]} />
+        </EffectComposer>
       </Canvas>
       <Controls />
     </>

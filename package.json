@@ -1,61 +1,101 @@
 {
-  "name": "r3f-starter",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@react-spring/three": "^9.0.0-rc.3",
-    "@testing-library/jest-dom": "^5.11.2",
-    "@testing-library/react": "^10.4.8",
-    "@testing-library/user-event": "^12.1.0",
-    "ccapture.js": "^1.1.0",
-    "drei": "^0.0.71",
-    "glsl-noise": "^0.0.0",
-    "postprocessing": "^6.16.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-postprocessing": "^1.1.4",
-    "react-scripts": "3.4.1",
-    "react-three-fiber": "5.0.0-beta.11",
-    "react-three-gui": "^0.1.5",
-    "three": "^0.119.1"
-  },
+  "name": "use-ccapture",
+  "version": "0.0.1",
+  "description": "todo",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "prettier": {
-    "tabWidth": 2
+    "prebuild": "rimraf dist && npm run typegen",
+    "build": "rollup -c",
+    "prepare": "npm run build",
+    "eslint": "eslint src/**/*.{js,ts,jsx,tsx}",
+    "eslint:storybook": "eslint .storybook/**/*.js  --ignore-pattern !.storybook",
+    "test": "echo no tests yet",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false --strict --jsx react",
+    "typegen": "tsc --emitDeclarationOnly"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged --pattern \"**/*.*(js)\""
+      "pre-commit": "pretty-quick --staged --pattern '**/*.*(js|jsx|ts|tsx)'"
     }
   },
+  "prettier": {
+    "semi": false,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "jsxBracketSameLine": true,
+    "tabWidth": 2,
+    "printWidth": 120
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gsimone/use-ccapture.git"
+  },
+  "keywords": [
+    "react",
+    "three",
+    "threejs",
+    "react-three-fiber",
+    "ccapture"
+  ],
+  "author": "Gianmarco Simone",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gsimone/use-ccapture/issues"
+  },
+  "homepage": "https://github.com/gsimone/use-ccapture#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.11.2",
+    "@rollup/plugin-alias": "^3.1.1",
+    "utility-types": "^3.10.0"
+  },
   "devDependencies": {
-    "customize-cra": "^1.0.0",
-    "customize-cra-react-refresh": "^1.1.0",
+    "@babel/core": "7.11.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-transform-modules-commonjs": "7.10.4",
+    "@babel/plugin-transform-parameters": "7.10.5",
+    "@babel/plugin-transform-runtime": "7.11.0",
+    "@babel/plugin-transform-template-literals": "7.10.5",
+    "@babel/preset-env": "7.11.0",
+    "@babel/preset-react": "7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/ccapture.js": "^1.1.0",
+    "@types/lodash-es": "^4.17.3",
+    "@types/react": "^16.9.45",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-test-renderer": "^16.9.3",
+    "@typescript-eslint/eslint-plugin": "^3.8.0",
+    "@typescript-eslint/parser": "^3.8.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-react": "^7.20.5",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "glslify-loader": "^2.0.0",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
-    "raw-loader": "^4.0.1",
-    "react-app-rewired": "^2.1.6"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-three-fiber": "^4.2.16",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.23.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-size-snapshot": "^0.12.0",
+    "three": "^0.119.1",
+    "typescript": "^3.9.7"
+  },
+  "peerDependencies": {
+    "react": ">=16.13",
+    "react-dom": ">=16.13",
+    "react-three-fiber": ">=4.2"
   }
 }
