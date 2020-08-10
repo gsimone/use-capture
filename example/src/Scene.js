@@ -9,11 +9,11 @@ import {
   useTextureLoader,
 } from "drei";
 
-import { useCCapture, useRecordingState } from "use-ccapture";
+import { useCapture, useRecordingState } from "@gsimone/use-capture";
 import { useControl } from "react-three-gui";
 
 export default function Scene() {
-  const { getProgress, startRecording, stopRecording } = useCCapture();
+  const { getProgress, startRecording, stopRecording } = useCapture();
   const isRecording = useRecordingState();
 
   useControl("Start Recording", {

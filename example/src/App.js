@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { Canvas } from "react-three-fiber";
 import { ChromaticAberration, EffectComposer } from "react-postprocessing";
 
-import { Recorder } from "use-ccapture";
+import { Recorder } from "@gsimone/use-capture";
 
 import Scene from "./Scene";
 import { Controls, useControl } from "react-three-gui";
@@ -28,12 +28,13 @@ function useIntControl(name, { value, ...opts }) {
 }
 
 function App() {
-  const duration = useIntControl("Duration", { value: 2, max: 120 });
-  const fps = useIntControl("Framerate", { value: 1, min: 12, max: 120 });
+  const duration = useIntControl("Duration", { value: 2, max: 4 });
+  const fps = useIntControl("Framerate", { value: 12, min: 12, max: 60 });
   const motionBlurFrames = useIntControl("Motion blur frames", {
     value: 0,
     max: 12,
   });
+
   const format = useControl("Format", {
     type: "select",
     value: "webm",
@@ -45,9 +46,6 @@ function App() {
       <Canvas
         shadowMap
         colorManagement
-        style={{
-          background: "#121212",
-        }}
         // 💡 preserveDrawingBuffer is mandatory
         gl={{
           preserveDrawingBuffer: true,
