@@ -1,7 +1,7 @@
 # WIP 🎥 use-ccapture
 Record react-three-fiber scenes with [ccapture.js](https://github.com/spite/ccapture.js)
 
-<img src="https://raw.githubusercontent.com/gsimone/r3f-ccapture/master/octa.gif" width="200" />
+<img src="https://raw.githubusercontent.com/gsimone/use-ccapture/master/octa.gif" width="200" />
 
 Discussion: https://github.com/react-spring/drei/issues/84
 
@@ -15,6 +15,39 @@ yarn && yarn start
 
 - the ccapture.js dependency is a git submodule of a fork, until the original is updated & published 
 - Gif format doesn't work yet
+
+## Usage
+
+Basic example
+
+```jsx
+import {Canvas, useFrame} from 'react-three-fiber'
+import { Recorder, useCapture } from 'use-ccapture';
+
+export const App = () => {
+
+  const ref = useRef() 
+
+  const { getProgress } = useCapture()
+  useFrame(() => {
+    ref.current.rotation.x = getProgress()
+  }) 
+  
+  return (
+     <>
+      <Canvas
+          gl={{ preserveDrawingBuffer: true }}
+          onCreated={({gl}) => gl.setClearColor('#000')}
+       >
+         <mesh ref={ref} />
+        <Recorder  duration={2} framerate={60} />
+       </Canvas>
+     </>
+   );
+}
+```
+
+*NOTE*: the Recorder component doesn't need to wrap around your app but make sure it's inside the `<Canvas />`
 
 ## Requisites
 
@@ -34,35 +67,3 @@ yarn && yarn start
   }}
 >
 ```
-
-## API
-
-### <Recorder />
-
-A context provider, wrap around the components that need to access recording status
-
-Props:
-```js
-<Recorder
-  duration={2} // record time
-  framerate={24} // frames per second
-  format={webm} // output format ( webm, jpg, gif )
-  motionBlurFrames={4} // number of frames used to generate motion blur
->
-   ...yourScene
-</Recorder>
-```
-
-### useRecorder
-
-A hook to fetch the current playhead status
-
-```js
-const { getProgress, duration, playhead, startRecording } = useRecorder()
-
-useFrame(() => {
-   ref.current.rotation.x = Math.sin( getProgress() ) 
-})
-```
-
-
