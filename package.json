@@ -1,5 +1,5 @@
 {
-  "name": "@gsimone/use-capture",
+  "name": "use-capture",
   "version": "0.0.1",
   "description": "todo",
   "main": "dist/index.cjs.js",

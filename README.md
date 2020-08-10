@@ -34,16 +34,14 @@ export const App = () => {
   }) 
   
   return (
-     <>
-      <Canvas
-          gl={{ preserveDrawingBuffer: true }}
-          onCreated={({gl}) => gl.setClearColor('#000')}
-       >
-         <mesh ref={ref} />
-        <Recorder  duration={2} framerate={60} />
-       </Canvas>
-     </>
-   );
+    <Canvas
+        gl={{ preserveDrawingBuffer: true }}
+        onCreated={({gl}) => gl.setClearColor('#000')}
+      >
+        <mesh ref={ref} />
+      <Recorder duration={2} framerate={60} />
+    </Canvas>
+  );
 }
 ```
 

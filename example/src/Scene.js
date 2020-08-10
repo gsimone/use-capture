@@ -9,7 +9,7 @@ import {
   useTextureLoader,
 } from "drei";
 
-import { useCapture, useRecordingState } from "@gsimone/use-capture";
+import { useCapture, useRecordingState } from "use-capture";
 import { useControl } from "react-three-gui";
 
 export default function Scene() {

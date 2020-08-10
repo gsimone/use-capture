@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { Canvas } from "react-three-fiber";
 import { ChromaticAberration, EffectComposer } from "react-postprocessing";
 
-import { Recorder } from "@gsimone/use-capture";
+import { Recorder } from "use-capture";
 
 import Scene from "./Scene";
 import { Controls, useControl } from "react-three-gui";
@@ -29,7 +29,7 @@ function useIntControl(name, { value, ...opts }) {
 
 function App() {
   const duration = useIntControl("Duration", { value: 2, max: 4 });
-  const fps = useIntControl("Framerate", { value: 12, min: 12, max: 60 });
+  const fps = useIntControl("Framerate", { value: 60, min: 12, max: 60 });
   const motionBlurFrames = useIntControl("Motion blur frames", {
     value: 0,
     max: 12,
