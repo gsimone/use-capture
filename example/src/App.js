@@ -1,11 +1,6 @@
 import React, { Suspense } from "react";
 import { Canvas } from "react-three-fiber";
-import {
-  ChromaticAberration,
-  EffectComposer,
-  Noise,
-  Vignette,
-} from "react-postprocessing";
+import { ChromaticAberration, EffectComposer } from "react-postprocessing";
 
 import { Recorder } from "use-ccapture";
 
@@ -33,8 +28,8 @@ function useIntControl(name, { value, ...opts }) {
 }
 
 function App() {
-  const duration = useIntControl("Duration", { value: 4, max: 120 });
-  const fps = useIntControl("Framerate", { value: 60, min: 12, max: 120 });
+  const duration = useIntControl("Duration", { value: 2, max: 120 });
+  const fps = useIntControl("Framerate", { value: 1, min: 12, max: 120 });
   const motionBlurFrames = useIntControl("Motion blur frames", {
     value: 0,
     max: 12,
@@ -67,18 +62,17 @@ function App() {
         concurrent
       >
         <Suspense fallback={null}>
-          <Recorder
-            duration={duration}
-            framerate={fps}
-            motionBlurFrames={motionBlurFrames}
-            format={format}
-          >
-            <Scene />
-          </Recorder>
+          <Scene />
         </Suspense>
         <EffectComposer>
           <ChromaticAberration offset={[0.004, 0.004]} />
         </EffectComposer>
+        <Recorder
+          duration={duration}
+          framerate={fps}
+          motionBlurFrames={motionBlurFrames}
+          format={format}
+        />
       </Canvas>
       <Controls />
     </>

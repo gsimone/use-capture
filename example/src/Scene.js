@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 
-import { useFrame } from "react-three-fiber";
+import { addAfterEffect, useFrame } from "react-three-fiber";
 import {
   Box,
   Octahedron,
@@ -14,22 +14,33 @@ import {
 import { useCCapture } from "use-ccapture";
 import { useControl } from "react-three-gui";
 
-import vert from "./shaders/default.vert";
-import frag from "./shaders/default.frag";
+function useRecordingState() {
+  const [recording, setRecording] = useState(false);
+  const { isRecording } = useCCapture();
 
-function Babb() {
-  return <></>;
+  addAfterEffect(() => {
+    setRecording(isRecording);
+  });
+
+  return recording;
 }
 
 export default function Scene() {
-  const { startRecording } = useCCapture();
+  const { getProgress, startRecording, stopRecording } = useCCapture();
+  const isRecording = useRecordingState();
 
   useControl("Start Recording", {
     type: "button",
-    onClick: startRecording,
+    onClick: React.useCallback(() => {
+      console.log("rec");
+      if (isRecording) {
+        stopRecording();
+      } else {
+        startRecording();
+      }
+    }, [isRecording, stopRecording, startRecording]),
   });
 
-  const { getProgress } = useCCapture();
   const map = useTextureLoader("./patt3.jpg");
 
   const texture = useRef();
