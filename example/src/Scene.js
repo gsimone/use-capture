@@ -1,29 +1,16 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef } from "react";
 import * as THREE from "three";
 
-import { addAfterEffect, useFrame } from "react-three-fiber";
+import { useFrame } from "react-three-fiber";
 import {
-  Box,
-  Octahedron,
   OrbitControls,
   PerspectiveCamera,
   Torus,
   useTextureLoader,
 } from "drei";
 
-import { useCCapture } from "use-ccapture";
+import { useCCapture, useRecordingState } from "use-ccapture";
 import { useControl } from "react-three-gui";
-
-function useRecordingState() {
-  const [recording, setRecording] = useState(false);
-  const { isRecording } = useCCapture();
-
-  addAfterEffect(() => {
-    setRecording(isRecording);
-  });
-
-  return recording;
-}
 
 export default function Scene() {
   const { getProgress, startRecording, stopRecording } = useCCapture();

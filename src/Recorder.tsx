@@ -49,7 +49,7 @@ const getPlayhead = () => {
   return state.playhead
 }
 
-export function useCCapture(): RecorderContext {
+export function useCapture(): RecorderContext {
   return { 
     startRecording, 
     stopRecording, 
@@ -59,12 +59,13 @@ export function useCCapture(): RecorderContext {
   }
 }
 
-export function useRecordingState() {
+export function useRecordingState(): boolean {
   const [recording, setRecording] = useState(false)
-  const { isRecording } = useCCapture();
+  const { isRecording } = useCapture();
 
   addAfterEffect(() => {
     setRecording(isRecording)
+    return false
   })
 
   return recording
