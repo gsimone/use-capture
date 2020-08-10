@@ -18,7 +18,6 @@ module.exports = (config, env) => {
       react: path.resolve("node_modules/react"),
       "react-dom": path.resolve("node_modules/react-dom"),
       "use-capture": "../../",
-      "ccapture.js": "../ccapture.js",
     }),
     addWebpackModuleRule({
       test: /\.(glsl|vs|fs|vert|frag)$/,

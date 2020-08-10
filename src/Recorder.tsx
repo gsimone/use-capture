@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useMemo, useEffect, useState } from 'react'
 import { useFrame, addAfterEffect } from 'react-three-fiber'
 // @ts-ignore
-import CCapture from 'ccapture.js'
+import CCapture from './ccapture.js/src/CCapture.js'
 
 type RecorderContext = {
   playhead: number
