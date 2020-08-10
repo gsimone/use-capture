@@ -1,4 +1,4 @@
-# WIP 🎥 use-ccapture
+# WIP 🎥 use-ccapture [![npm version](https://badge.fury.io/js/use-capture.svg)](https://badge.fury.io/js/use-capture)
 Record react-three-fiber scenes with [ccapture.js](https://github.com/spite/ccapture.js)
 
 <img src="https://raw.githubusercontent.com/gsimone/use-ccapture/master/octa.gif" width="200" />
