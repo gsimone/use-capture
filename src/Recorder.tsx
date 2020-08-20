@@ -22,6 +22,7 @@ type RecorderProps = {
   motionBlurFrames: number
   children: React.ReactNode
   showWidget: boolean
+  filename: string
 }
 
 const state = {
