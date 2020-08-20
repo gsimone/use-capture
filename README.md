@@ -1,19 +1,12 @@
-# WIP 🎥 use-ccapture [![npm version](https://badge.fury.io/js/use-capture.svg)](https://badge.fury.io/js/use-capture)
+# 🎥 use-capture [![npm version](https://badge.fury.io/js/use-capture.svg)](https://badge.fury.io/js/use-capture)
 Record react-three-fiber scenes with [ccapture.js](https://github.com/spite/ccapture.js)
 
 <img src="https://raw.githubusercontent.com/gsimone/use-ccapture/master/octa.gif" width="200" />
 
 Discussion: https://github.com/react-spring/drei/issues/84
 
-## Test local
-
-```
-yarn && yarn start
-```
-
 ## Notes
 
-- the ccapture.js dependency is a git submodule of a fork, until the original is updated & published 
 - Gif format doesn't work yet
 
 ## Usage
@@ -22,25 +15,31 @@ Basic example
 
 ```jsx
 import {Canvas, useFrame} from 'react-three-fiber'
-import { Recorder, useCapture } from 'use-ccapture';
+import { Recorder, useCapture } from 'use-capture';
+
+function Scene() {
+  const { getProgress } = useCapture()
+
+  useFrame(() => {
+     ref.current.rotation.x = Math.PI*2 * getProgress()
+  })
+
+  return <meshBufferGeometry ref={ref} />
+}
 
 export const App = () => {
-
-  const ref = useRef() 
-
-  const { getProgress } = useCapture()
-  useFrame(() => {
-    ref.current.rotation.x = getProgress()
-  }) 
+  const { startRecording } = useCapture
   
-  return (
+  return (<>
+    <button onClick={startRecording}>Record</button>
     <Canvas
         gl={{ preserveDrawingBuffer: true }}
         onCreated={({gl}) => gl.setClearColor('#000')}
       >
-        <mesh ref={ref} />
+      <Scene />
       <Recorder duration={2} framerate={60} />
     </Canvas>
+  <>
   );
 }
 ```
