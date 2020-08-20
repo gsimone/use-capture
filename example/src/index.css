@@ -12,8 +12,8 @@ body,
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial,
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
+    helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
   color: black;
 }
 
@@ -21,31 +21,30 @@ body {
   outline: none;
 }
 
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .canvas-container {
   width: 600px;
   height: 600px;
-
-  margin: 4rem auto;
-
   position: relative;
 }
 
 .recording {
-  width: 20px;
-  height: 20px;
-
-  border-radius: 20px;
-
   background-color: white;
+  border-radius: 4px;
+  padding: 0.5rem;
 
   position: absolute;
   right: 1rem;
   bottom: 1rem;
 
   z-index: 10;
-  
-  cursor: pointer;
 
+  cursor: pointer;
 }
 
 .recording.active {
