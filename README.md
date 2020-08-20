@@ -39,6 +39,7 @@ export const App = () => {
   <>);
 }
 ```
+[Try the example on codesandbox](https://codesandbox.io/s/zgi8e)
 
 *NOTE*: the Recorder component doesn't need to wrap around your app but make sure it's inside the `<Canvas />` because it relies on react-three-fiber's `useFrame`
 
