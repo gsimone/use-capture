@@ -16,9 +16,7 @@
     "react-postprocessing": "^1.1.4",
     "react-scripts": "3.4.1",
     "react-three-fiber": "5.0.0-beta.11",
-    "react-three-gui": "^0.1.5",
-    "three": "^0.119.1",
-    "tweakpane": "^1.5.3"
+    "three": "^0.119.1"
   },
   "scripts": {
     "start": "react-app-rewired start",

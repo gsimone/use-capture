@@ -5,48 +5,17 @@ import { ChromaticAberration, EffectComposer } from "react-postprocessing";
 import { Recorder } from "use-capture";
 import { useCapture } from "use-capture";
 
-import Tweakpane from "tweakpane";
-
 import Scene from "./Scene";
-
-const pane = new Tweakpane();
-
-const SETTINGS = {
-  duration: 2,
-  framerate: 24,
-  motionBlur: 0,
-  format: "webm",
-};
-
-pane.addInput(SETTINGS, "duration", { min: 0, max: 10, step: 0.0001 });
-pane.addInput(SETTINGS, "framerate");
-pane.addInput(SETTINGS, "motionBlur");
-pane.addInput(SETTINGS, "format", {
-  options: { jpg: "jpg", png: "png", webm: "webm" },
-});
 
 function App() {
   const { startRecording, isRecording } = useCapture();
 
-  const [, set] = useState();
-  const { duration, framerate, motionBlur, format } = SETTINGS;
-
-  useEffect(() => {
-    pane.on("change", (value) => {
-      set(value);
-      return value;
-    });
-
-    const btn = pane.addButton({ title: "Start Recording" });
-
-    btn.on("click", () => {
-      startRecording();
-    });
-  }, [startRecording]);
-
   return (
     <>
-      {isRecording && <div className="recording" />}
+      <div
+        className={`recording ${isRecording && "active"}`}
+        onClick={() => startRecording()}
+      />
       <Canvas
         shadowMap
         colorManagement
@@ -70,10 +39,11 @@ function App() {
           <ChromaticAberration offset={[0.004, 0.004]} />
         </EffectComposer>
         <Recorder
-          duration={duration}
-          framerate={framerate}
-          motionBlurFrames={motionBlur}
-          format={format}
+          duration={4}
+          framerate={24}
+          motionBlurFrames={0}
+          format={"webm"}
+          filename={"my-recording"}
         />
       </Canvas>
     </>

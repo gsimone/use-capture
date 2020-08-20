@@ -66,6 +66,12 @@ export function useCapture(): RecorderContext {
   }
 }
 
+function getExtension(format: string): string {
+  if (format === 'webm' || format === 'gif') return format
+
+  return 'tar'
+}
+
 export function Recorder({
   format = 'webm',
   duration = 2,
@@ -73,6 +79,7 @@ export function Recorder({
   verbose = false,
   motionBlurFrames = 0,
   showWidget = false,
+  filename = 'recording',
 }: RecorderProps): React.ReactNode {
   const capturer = useMemo(() => {
     return new CCapture({
@@ -95,7 +102,13 @@ export function Recorder({
       state.shouldRecord = false
       state.isRecording = false
       capturer.stop()
-      capturer.save()
+      capturer.save((blob) => {
+        const fileURL = window.URL.createObjectURL(blob)
+        const tempLink = document.createElement('a')
+        tempLink.href = fileURL
+        tempLink.setAttribute('download', `${filename}.${getExtension(format)}`)
+        tempLink.click()
+      })
     }
 
     if (!state.isRecording && state.shouldRecord && currentPlayhead < state.playhead) {
