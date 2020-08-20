@@ -21,10 +21,12 @@ const SETTINGS = {
 pane.addInput(SETTINGS, "duration", { min: 0, max: 10, step: 0.0001 });
 pane.addInput(SETTINGS, "framerate");
 pane.addInput(SETTINGS, "motionBlur");
-pane.addInput(SETTINGS, "format", { options: { gif: "gif", webm: "webm" } });
+pane.addInput(SETTINGS, "format", {
+  options: { jpg: "jpg", png: "png", webm: "webm" },
+});
 
 function App() {
-  const { startRecording } = useCapture();
+  const { startRecording, isRecording } = useCapture();
 
   const [, set] = useState();
   const { duration, framerate, motionBlur, format } = SETTINGS;
@@ -43,35 +45,38 @@ function App() {
   }, [startRecording]);
 
   return (
-    <Canvas
-      shadowMap
-      colorManagement
-      // 💡 preserveDrawingBuffer is mandatory
-      gl={{
-        preserveDrawingBuffer: true,
-      }}
-      // 💡 not having a clear color would glitch the recording
-      onCreated={({ gl }) => {
-        gl.setClearColor("#fff");
-      }}
-      camera={{
-        position: [0, 0, -10],
-      }}
-      concurrent
-    >
-      <Suspense fallback={null}>
-        <Scene />
-      </Suspense>
-      <EffectComposer>
-        <ChromaticAberration offset={[0.004, 0.004]} />
-      </EffectComposer>
-      <Recorder
-        duration={duration}
-        framerate={framerate}
-        motionBlurFrames={motionBlur}
-        format={format}
-      />
-    </Canvas>
+    <>
+      {isRecording && <div className="recording" />}
+      <Canvas
+        shadowMap
+        colorManagement
+        // 💡 preserveDrawingBuffer is mandatory
+        gl={{
+          preserveDrawingBuffer: true,
+        }}
+        // 💡 not having a clear color would glitch the recording
+        onCreated={({ gl }) => {
+          gl.setClearColor("#fff");
+        }}
+        camera={{
+          position: [0, 0, -10],
+        }}
+        concurrent
+      >
+        <Suspense fallback={null}>
+          <Scene />
+        </Suspense>
+        <EffectComposer>
+          <ChromaticAberration offset={[0.004, 0.004]} />
+        </EffectComposer>
+        <Recorder
+          duration={duration}
+          framerate={framerate}
+          motionBlurFrames={motionBlur}
+          format={format}
+        />
+      </Canvas>
+    </>
   );
 }
 

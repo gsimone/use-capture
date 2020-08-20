@@ -26,4 +26,22 @@ body {
   height: 600px;
 
   margin: 4rem auto;
+
+  position: relative;
+}
+
+.recording {
+  width: 20px;
+  height: 20px;
+
+  border-radius: 20px;
+  background-color: red;
+  outline: red;
+
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+
+  z-index: 10;
+  
 }

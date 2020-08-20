@@ -20,8 +20,8 @@ type RecorderProps = {
   framerate: number
   verbose: boolean
   motionBlurFrames: number
-  children: React.ReactNode,
-  showWidget: boolean,
+  children: React.ReactNode
+  showWidget: boolean
 }
 
 const state = {
@@ -29,7 +29,7 @@ const state = {
   isRecording: false,
   prevPlayhead: 0,
   playhead: 0,
-  duration: 0
+  duration: 0,
 }
 
 const startRecording = () => {
@@ -37,7 +37,7 @@ const startRecording = () => {
   state.playhead = 0
 }
 
-const stopRecording =() => {
+const stopRecording = () => {
   console.log('TBI')
 }
 
@@ -50,27 +50,21 @@ const getPlayhead = () => {
 }
 
 export function useCapture(): RecorderContext {
-  return { 
-    startRecording, 
-    stopRecording, 
-    getProgress, 
-    getPlayhead, 
-    ...state,
-  }
-}
-
-export function useRecordingState(): boolean {
-  const [recording, setRecording] = useState(false)
-  const { isRecording } = useCapture();
+  const [, setRecording] = useState(false)
 
   addAfterEffect(() => {
-    setRecording(isRecording)
+    setRecording(state.isRecording)
     return false
   })
 
-  return recording
+  return {
+    startRecording,
+    stopRecording,
+    getProgress,
+    getPlayhead,
+    ...state,
+  }
 }
-
 
 export function Recorder({
   format = 'webm',
@@ -80,7 +74,6 @@ export function Recorder({
   motionBlurFrames = 0,
   showWidget = false,
 }: RecorderProps): React.ReactNode {
-
   const capturer = useMemo(() => {
     return new CCapture({
       format,
