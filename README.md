@@ -1,10 +1,6 @@
 # 🎥 use-capture [![npm version](https://badge.fury.io/js/use-capture.svg)](https://badge.fury.io/js/use-capture)
 Record react-three-fiber scenes with [ccapture.js](https://github.com/spite/ccapture.js)
 
-<img src="https://raw.githubusercontent.com/gsimone/use-ccapture/master/octa.gif" width="200" />
-
-Discussion: https://github.com/react-spring/drei/issues/84
-
 ## Notes
 
 - Gif format doesn't work yet
@@ -40,12 +36,11 @@ export const App = () => {
       <Scene />
       <Recorder duration={2} framerate={60} />
     </Canvas>
-  <>
-  );
+  <>);
 }
 ```
 
-*NOTE*: the Recorder component doesn't need to wrap around your app but make sure it's inside the `<Canvas />`
+*NOTE*: the Recorder component doesn't need to wrap around your app but make sure it's inside the `<Canvas />` because it relies on react-three-fiber's `useFrame`
 
 ## Requisites
 
