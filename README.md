@@ -13,6 +13,7 @@ Basic example
 import React, { useRef } from 'react'
 import { Canvas, useFrame } from 'react-three-fiber'
 import { Recorder, useCapture } from 'use-capture';
+import { Octahedron } from 'drei'
 
 function Scene() {
   const { getProgress } = useCapture()
@@ -21,14 +22,16 @@ function Scene() {
      ref.current.rotation.x = Math.PI*2 * getProgress()
   })
 
-  return <meshBufferGeometry ref={ref} />
+  return <Octahedron args={[1]} ref={ref} />
 }
 
 export const App = () => {
   const { startRecording } = useCapture()
   
   return (<>
-    <button onClick={startRecording}>Record</button>
+    <button className="recording" onClick={startRecording}>
+        {isRecording ? "Recording..." : "Start Recording"}
+      </button>
     <Canvas
         gl={{ preserveDrawingBuffer: true }}
         onCreated={({gl}) => gl.setClearColor('#000')}
