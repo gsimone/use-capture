@@ -14,7 +14,8 @@ Discussion: https://github.com/react-spring/drei/issues/84
 Basic example
 
 ```jsx
-import {Canvas, useFrame} from 'react-three-fiber'
+import React, { useRef } from 'react'
+import { Canvas, useFrame } from 'react-three-fiber'
 import { Recorder, useCapture } from 'use-capture';
 
 function Scene() {
