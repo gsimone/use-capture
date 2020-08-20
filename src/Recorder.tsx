@@ -102,7 +102,7 @@ export function Recorder({
       state.shouldRecord = false
       state.isRecording = false
       capturer.stop()
-      capturer.save((blob) => {
+      capturer.save((blob: Blob) => {
         const fileURL = window.URL.createObjectURL(blob)
         const tempLink = document.createElement('a')
         tempLink.href = fileURL
