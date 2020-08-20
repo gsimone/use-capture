@@ -7,44 +7,35 @@ Record react-three-fiber scenes with [ccapture.js](https://github.com/spite/ccap
 
 ## Usage
 
-Basic example
+[Check a simple example on codesandbox](https://zgi8e.csb.app/)
 
+1. Add the Render component to you react-three-fiber Canvas
 ```jsx
-import React, { useRef } from 'react'
-import { Canvas, useFrame } from 'react-three-fiber'
-import { Recorder, useCapture } from 'use-capture';
-import { Octahedron } from 'drei'
+import { Recorder } from 'use-capture'
 
-function Scene() {
-  const { getProgress } = useCapture()
-
-  useFrame(() => {
-     ref.current.rotation.x = Math.PI*2 * getProgress()
-  })
-
-  return <Octahedron args={[1]} ref={ref} />
-}
-
-export const App = () => {
-  const { startRecording } = useCapture()
-  
-  return (<>
-    <button className="recording" onClick={startRecording}>
-        {isRecording ? "Recording..." : "Start Recording"}
-      </button>
-    <Canvas
-        gl={{ preserveDrawingBuffer: true }}
-        onCreated={({gl}) => gl.setClearColor('#000')}
-      >
-      <Scene />
-      <Recorder duration={2} framerate={60} />
-    </Canvas>
-  <>);
-}
+<Canvas>
+  ...yourScene
+  <Recorder duration={2} framerate={30} />
+</Canvas>
 ```
-[Try the example on codesandbox](https://codesandbox.io/s/zgi8e)
+*NOTE*: the Recorder component doesn't need to wrap around your app but make sure it's inside the `<Canvas />`
 
-*NOTE*: the Recorder component doesn't need to wrap around your app but make sure it's inside the `<Canvas />` because it relies on react-three-fiber's `useFrame`
+2. Animate using the recorder progress or playhead
+```jsx
+const { getProgress } = useCapture()
+
+useFrame(() => {
+  // eg. full rotation
+  mesh.current.rotation.x = getProgress() * Math.PI * 2 
+})
+```
+
+3. start recording by using the hook anywhere in your app
+```jsx
+const { startRecording } = useCapture()
+
+<button onClick={startRecording}>Record</button>
+```
 
 ## Requisites
 

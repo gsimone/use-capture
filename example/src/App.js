@@ -1,4 +1,4 @@
-import React, { Suspense, useRef } from "react";
+import React, { useRef } from "react";
 import { Canvas, useFrame } from "react-three-fiber";
 import { Octahedron } from "drei";
 import { Recorder, useCapture } from "use-capture";
