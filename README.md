@@ -25,7 +25,7 @@ function Scene() {
 }
 
 export const App = () => {
-  const { startRecording } = useCapture
+  const { startRecording } = useCapture()
   
   return (<>
     <button onClick={startRecording}>Record</button>
