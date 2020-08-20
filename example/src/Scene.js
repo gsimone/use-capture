@@ -9,24 +9,10 @@ import {
   useTextureLoader,
 } from "drei";
 
-import { useCapture, useRecordingState } from "use-capture";
-import { useControl } from "react-three-gui";
+import { useCapture } from "use-capture";
 
 export default function Scene() {
-  const { getProgress, startRecording, stopRecording } = useCapture();
-  const isRecording = useRecordingState();
-
-  useControl("Start Recording", {
-    type: "button",
-    onClick: React.useCallback(() => {
-      console.log("rec");
-      if (isRecording) {
-        stopRecording();
-      } else {
-        startRecording();
-      }
-    }, [isRecording, stopRecording, startRecording]),
-  });
+  const { getProgress } = useCapture();
 
   const map = useTextureLoader("./patt3.jpg");
 

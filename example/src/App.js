@@ -1,79 +1,77 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { Canvas } from "react-three-fiber";
 import { ChromaticAberration, EffectComposer } from "react-postprocessing";
 
 import { Recorder } from "use-capture";
+import { useCapture } from "use-capture";
+
+import Tweakpane from "tweakpane";
 
 import Scene from "./Scene";
-import { Controls, useControl } from "react-three-gui";
 
-function useIntControl(name, { value, ...opts }) {
-  const [intVal, setVal] = React.useState(value);
+const pane = new Tweakpane();
 
-  const setIntVal = React.useCallback(
-    (val) => {
-      setVal(parseInt(val, 10));
-    },
-    [setVal]
-  );
+const SETTINGS = {
+  duration: 2,
+  framerate: 24,
+  motionBlur: 0,
+  format: "webm",
+};
 
-  useControl(name, {
-    type: "number",
-    value: intVal,
-    ...opts,
-    state: [intVal, setIntVal],
-  });
-
-  return intVal;
-}
+pane.addInput(SETTINGS, "duration", { min: 0, max: 10, step: 0.0001 });
+pane.addInput(SETTINGS, "framerate");
+pane.addInput(SETTINGS, "motionBlur");
+pane.addInput(SETTINGS, "format", { options: { gif: "gif", webm: "webm" } });
 
 function App() {
-  const duration = useIntControl("Duration", { value: 2, max: 4 });
-  const fps = useIntControl("Framerate", { value: 60, min: 12, max: 60 });
-  const motionBlurFrames = useIntControl("Motion blur frames", {
-    value: 0,
-    max: 12,
-  });
+  const { startRecording } = useCapture();
 
-  const format = useControl("Format", {
-    type: "select",
-    value: "webm",
-    items: ["webm", "gif", "jpg"],
-  });
+  const [, set] = useState();
+  const { duration, framerate, motionBlur, format } = SETTINGS;
+
+  useEffect(() => {
+    pane.on("change", (value) => {
+      set(value);
+      return value;
+    });
+
+    const btn = pane.addButton({ title: "Start Recording" });
+
+    btn.on("click", () => {
+      startRecording();
+    });
+  }, [startRecording]);
 
   return (
-    <>
-      <Canvas
-        shadowMap
-        colorManagement
-        // 💡 preserveDrawingBuffer is mandatory
-        gl={{
-          preserveDrawingBuffer: true,
-        }}
-        // 💡 not having a clear color would glitch the recording
-        onCreated={({ gl }) => {
-          gl.setClearColor("#fff");
-        }}
-        camera={{
-          position: [0, 0, -10],
-        }}
-        concurrent
-      >
-        <Suspense fallback={null}>
-          <Scene />
-        </Suspense>
-        <EffectComposer>
-          <ChromaticAberration offset={[0.004, 0.004]} />
-        </EffectComposer>
-        <Recorder
-          duration={duration}
-          framerate={fps}
-          motionBlurFrames={motionBlurFrames}
-          format={format}
-        />
-      </Canvas>
-      <Controls />
-    </>
+    <Canvas
+      shadowMap
+      colorManagement
+      // 💡 preserveDrawingBuffer is mandatory
+      gl={{
+        preserveDrawingBuffer: true,
+      }}
+      // 💡 not having a clear color would glitch the recording
+      onCreated={({ gl }) => {
+        gl.setClearColor("#fff");
+      }}
+      camera={{
+        position: [0, 0, -10],
+      }}
+      concurrent
+    >
+      <Suspense fallback={null}>
+        <Scene />
+      </Suspense>
+      <EffectComposer>
+        <ChromaticAberration offset={[0.004, 0.004]} />
+      </EffectComposer>
+      <Recorder
+        duration={duration}
+        framerate={framerate}
+        motionBlurFrames={motionBlur}
+        format={format}
+      />
+    </Canvas>
   );
 }
 
