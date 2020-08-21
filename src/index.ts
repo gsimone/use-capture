@@ -1,1 +1,3 @@
-export * from './Recorder'
+import { useCapture } from './Recorder'
+
+export default useCapture

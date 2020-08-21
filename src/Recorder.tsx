@@ -1,18 +1,21 @@
+import * as THREE from 'three'
 import * as React from 'react'
-import { useMemo, useEffect, useState } from 'react'
-import { useFrame, addAfterEffect } from 'react-three-fiber'
+import { useRef, useCallback, useMemo, useEffect, useState } from 'react'
 // @ts-ignore
 import CCapture from './ccapture.js/src/CCapture.js'
 
-type RecorderContext = {
-  playhead: number
-  duration: number
-  isRecording: boolean
-  startRecording: () => void
-  stopRecording: () => void
-  getProgress: () => number
-  getPlayhead: () => number
-}
+type RecorderContext = [
+  () => void, 
+  {
+    playhead: number
+    duration: number
+    isRecording: boolean
+    startRecording: () => void
+    stopRecording: () => void
+    getProgress: () => number
+    getPlayhead: () => number
+  }
+]
 
 type RecorderProps = {
   format: 'webm' | 'gif' | 'jpeg'
@@ -50,53 +53,39 @@ const getPlayhead = () => {
   return state.playhead
 }
 
-export function useCapture(): RecorderContext {
-  const [, setRecording] = useState(false)
-
-  addAfterEffect(() => {
-    setRecording(state.isRecording)
-    return false
-  })
-
-  return {
-    startRecording,
-    stopRecording,
-    getProgress,
-    getPlayhead,
-    ...state,
-  }
-}
-
-function getExtension(format: string): string {
-  if (format === 'webm' || format === 'gif') return format
-
-  return 'tar'
-}
-
-export function Recorder({
+export function useCapture({
   format = 'webm',
   duration = 2,
   framerate = 24,
+  fps = 24,
   verbose = false,
   motionBlurFrames = 0,
   showWidget = false,
   filename = 'recording',
-}: RecorderProps): React.ReactNode {
+  onFrame
+}): RecorderContext {
+  const [, setRecording] = useState(false)
+  
   const capturer = useMemo(() => {
     return new CCapture({
       format,
-      framerate,
+      framerate: fps || framerate,
       verbose,
       motionBlurFrames,
       display: showWidget,
     })
-  }, [format, framerate, motionBlurFrames, showWidget, verbose])
+  }, [format, fps, framerate, motionBlurFrames, showWidget, verbose])
 
-  useEffect(() => {
-    state.duration = duration
-  }, [duration])
+  const [clock] = useState(new THREE.Clock())
+  const gl = useRef()
 
-  useFrame(({ clock, gl }) => {
+  const bind = useCallback((context) => {
+    context.clock.getElapsedTime = () => state.playhead % duration
+    gl.current = context.gl
+  }, [])
+
+  const loop = useCallback((t) => {
+
     let currentPlayhead = clock.getElapsedTime() % duration
 
     if (state.isRecording && currentPlayhead < state.playhead) {
@@ -118,13 +107,31 @@ export function Recorder({
     }
 
     if (state.isRecording) {
-      capturer.capture(gl.domElement)
+      capturer.capture(gl.current.domElement)
     }
 
     state.playhead = currentPlayhead
-  })
 
-  return null
+    requestAnimationFrame(loop)
+
+  }, [])
+
+  useEffect(() => {
+    requestAnimationFrame(loop)
+  }, [loop])
+
+
+  return [
+    bind, startRecording, {
+    stopRecording,
+    getProgress,
+    getPlayhead,
+    ...state,
+  }]
 }
 
-export default Recorder
+function getExtension(format: string): string {
+  if (format === 'webm' || format === 'gif') return format
+
+  return 'tar'
+}

@@ -10,7 +10,8 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
     "react-three-fiber": "5.0.0-beta.11",
-    "three": "^0.119.1"
+    "three": "^0.119.1",
+    "use-tweaks": "^0.0.1-alpha.10"
   },
   "scripts": {
     "start": "react-app-rewired start",

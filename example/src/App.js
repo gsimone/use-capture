@@ -1,15 +1,18 @@
 import React, { useRef } from "react";
 import { Canvas, useFrame } from "react-three-fiber";
 import { Octahedron } from "drei";
-import { Recorder, useCapture } from "use-capture";
+import { useTweaks, makeButton, makeDirectory } from "use-tweaks";
 
-function Scene() {
-  const { getProgress } = useCapture();
+import useCapture from "use-capture";
 
+function Scene({ duration }) {
   const mesh = useRef();
-  useFrame(() => {
-    mesh.current.rotation.x = getProgress() * Math.PI * 2;
-    mesh.current.rotation.y = getProgress() * Math.PI * 4;
+
+  useFrame(({ clock }) => {
+    const progress = clock.getElapsedTime() / duration;
+
+    mesh.current.rotation.y = progress * Math.PI * 2;
+    mesh.current.position.z = Math.sin(progress * Math.PI * 2) * 2;
   });
 
   return (
@@ -19,31 +22,36 @@ function Scene() {
   );
 }
 
+const tweaks = {
+  fps: { value: 60, min: 12, max: 120 },
+  duration: { value: 2, min: 1, max: 4 },
+  ...makeDirectory(
+    "Advanced",
+    {
+      format: { value: "webm", options: { webm: "webm" } },
+      motionBlurFrames: 0,
+    },
+    { expanded: false }
+  ),
+};
+
 function App() {
-  const { startRecording, isRecording } = useCapture();
+  const { duration, fps } = useTweaks(tweaks);
+  const [bind, { startRecording }] = useCapture({ duration, fps });
+  useTweaks(makeButton("Start Recording", startRecording));
 
   return (
-    <>
-      <button className="recording" onClick={startRecording}>
-        {isRecording ? "Recording..." : "Start Recording"}
-      </button>
-      <Canvas
-        // 💡 preserveDrawingBuffer is mandatory
-        gl={{
-          preserveDrawingBuffer: true,
-        }}
-      >
-        {/* 💡 not having a clear color would glitch the recording */}
-        <color attach="background" args={["#000"]} />
-        <Scene />
-        <Recorder
-          duration={2}
-          framerate={60}
-          motionBlurFrames={1}
-          filename={"my-recording"}
-        />
-      </Canvas>
-    </>
+    <Canvas
+      // 💡 preserveDrawingBuffer is mandatory
+      gl={{
+        preserveDrawingBuffer: true,
+      }}
+      onCreated={bind}
+    >
+      {/* 💡 not having a clear color would glitch the recording */}
+      <color attach="background" args={["#000"]} />
+      <Scene duration={duration} />
+    </Canvas>
   );
 }
 

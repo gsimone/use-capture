@@ -14,7 +14,8 @@ body,
 body {
   font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
     helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
-  color: black;
+  color: #000;
+  background-color: #000;
 }
 
 *:focus {
