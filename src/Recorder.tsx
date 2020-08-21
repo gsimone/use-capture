@@ -1,16 +1,18 @@
 import * as THREE from 'three'
 import * as React from 'react'
 import { useRef, useCallback, useMemo, useEffect, useState } from 'react'
+import { SharedCanvasContext } from 'react-three-fiber'
+
 // @ts-ignore
 import CCapture from './ccapture.js/src/CCapture.js'
 
 type RecorderContext = [
-  () => void, 
+  (context: SharedCanvasContext) => void, 
+  () => void,
   {
     playhead: number
     duration: number
     isRecording: boolean
-    startRecording: () => void
     stopRecording: () => void
     getProgress: () => number
     getPlayhead: () => number
@@ -21,6 +23,7 @@ type RecorderProps = {
   format: 'webm' | 'gif' | 'jpeg'
   duration: number
   framerate: number
+  fps: number
   verbose: boolean
   motionBlurFrames: number
   children: React.ReactNode
@@ -30,8 +33,8 @@ type RecorderProps = {
 
 const state = {
   shouldRecord: false,
-  isRecording: false,
   prevPlayhead: 0,
+  isRecording: false,
   playhead: 0,
   duration: 0,
 }
@@ -62,9 +65,8 @@ export function useCapture({
   motionBlurFrames = 0,
   showWidget = false,
   filename = 'recording',
-  onFrame
-}): RecorderContext {
-  const [, setRecording] = useState(false)
+}: RecorderProps): RecorderContext {
+  const [isRecording, setRecording] = useState(false)
   
   const capturer = useMemo(() => {
     return new CCapture({
@@ -77,20 +79,21 @@ export function useCapture({
   }, [format, fps, framerate, motionBlurFrames, showWidget, verbose])
 
   const [clock] = useState(new THREE.Clock())
-  const gl = useRef()
+  const gl = useRef<THREE.WebGLRenderer>()
 
-  const bind = useCallback((context) => {
+  const bind = useCallback((context: SharedCanvasContext) => {
     context.clock.getElapsedTime = () => state.playhead % duration
     gl.current = context.gl
-  }, [])
+  }, [duration])
 
-  const loop = useCallback((t) => {
+  const loop = useCallback(() => {
 
     let currentPlayhead = clock.getElapsedTime() % duration
 
     if (state.isRecording && currentPlayhead < state.playhead) {
       state.shouldRecord = false
       state.isRecording = false
+      setRecording(false)
       capturer.stop()
       capturer.save((blob: Blob) => {
         const fileURL = window.URL.createObjectURL(blob)
@@ -104,10 +107,16 @@ export function useCapture({
     if (!state.isRecording && state.shouldRecord && currentPlayhead < state.playhead) {
       state.isRecording = true
       capturer.start()
+      setRecording(true)
     }
 
     if (state.isRecording) {
-      capturer.capture(gl.current.domElement)
+      if (gl.current) {
+        capturer.capture(gl.current.domElement)
+      } else {
+        throw new Error("Missing gl")
+      }
+      
     }
 
     state.playhead = currentPlayhead
@@ -122,12 +131,9 @@ export function useCapture({
 
 
   return [
-    bind, startRecording, {
-    stopRecording,
-    getProgress,
-    getPlayhead,
-    ...state,
-  }]
+    bind, 
+    startRecording, 
+    { stopRecording, getProgress, getPlayhead, ...state, isRecording }]
 }
 
 function getExtension(format: string): string {

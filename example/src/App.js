@@ -37,7 +37,7 @@ const tweaks = {
 
 function App() {
   const { duration, fps } = useTweaks(tweaks);
-  const [bind, { startRecording }] = useCapture({ duration, fps });
+  const [bind, startRecording] = useCapture({ duration, fps });
   useTweaks(makeButton("Start Recording", startRecording));
 
   return (
