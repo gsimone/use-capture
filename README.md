@@ -3,6 +3,7 @@ Record react-three-fiber scenes with [ccapture.js](https://github.com/spite/ccap
 
 ## Notes
 
+- Not yet ready for general use, if you try it let me know ✌️
 - Gif format doesn't work yet
 
 ## Usage
