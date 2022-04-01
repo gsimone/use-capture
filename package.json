@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gsimone/use-ccapture.git"
+    "url": "git+https://github.com/gsimone/use-capture.git"
   },
   "keywords": [
     "react",
@@ -43,9 +43,9 @@
   "author": "Gianmarco Simone",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gsimone/use-ccapture/issues"
+    "url": "https://github.com/gsimone/use-capture/issues"
   },
-  "homepage": "https://github.com/gsimone/use-ccapture#readme",
+  "homepage": "https://github.com/gsimone/use-capture#readme",
   "dependencies": {
     "@babel/runtime": "^7.11.2",
     "@rollup/plugin-alias": "^3.1.1",
